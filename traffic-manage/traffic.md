@@ -10,13 +10,13 @@ These instructions will get you a copy of the project up and running on your ras
 
 ### Prerequisites
 
-If you don't have access the the Desktop of the Raspberry Pi, please take a look at the original [Readme.md]{https://github.com/hi-anvi/raspberry-pi/readme.md}
+If you don't have access the the Desktop of the Raspberry Pi, please take a look at the original [readme]{https://github.com/hi-anvi/raspberry-pi/readme.md}
 
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
 
-First of all, please follow the steps in this [youtube link]{https://www.youtube.com/watch?v=z70ZrSZNi-8} to get the basic environment set up for the yolo detection of cars.
+First of all, please follow the steps in this [youtube-link]{https://www.youtube.com/watch?v=z70ZrSZNi-8} to get the basic environment set up for the yolo detection of cars.
 
 Later, install opencv and numpy if not already with this command:
 
