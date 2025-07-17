@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your ras
 
 ### Prerequisites
 
-If you don't have access the the Desktop of the Raspberry Pi, please take a look at the original [readme](https://github.com/hi-anvi/raspberry-pi/readme.md)
+If you don't have access the the Desktop of the Raspberry Pi, please take a look at the original [readme](https://github.com/hi-anvi/raspberry-pi)
 
 ### Installing
 
