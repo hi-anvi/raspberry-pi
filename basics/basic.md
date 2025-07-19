@@ -4,7 +4,7 @@ This folder has a few basic beginner projects and a few test projects to test if
 
 ## Getting Started
 
-You will need to be able to access the pi's desktop. Take a look at this [readme](github.com/hi-anvi/raspberry-pi) on how to access the pi desktop.
+You will need to be able to access the pi's desktop. Take a look at this [readme](https://github.com/hi-anvi/raspberry-pi) on how to access the pi desktop.
 
 ### Components
 
