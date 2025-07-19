@@ -40,9 +40,21 @@ def green_light_time(dictionary):
     dict_updated["Green light time"] = green_time
     return dict_updated
 
-def rand_dict_creator():
+def rand_dict_creator(num):
     """Returns a total random dictionary with some parameters"""
-    rand_dict = {}
+    rand_dict = {"Road": num}
+    if num == 1:
+        rand_dict["Green led"] = LED(3)
+        rand_dict["Red led"] = LED(2)
+    elif num == 2:
+        rand_dict["Green led"] = LED(5)
+        rand_dict["Red led"] = LED(4)
+    elif num == 3:
+        rand_dict["Green led"] = LED(12)
+        rand_dict["Red led"] = LED(6)
+    elif num == 4:
+        rand_dict["Green led"] = LED(16)
+        rand_dict["Red led"] = LED(13)
     rand_dict = random_no_of_vehicles(rand_dict)
     rand_dict = random_timestamp(rand_dict)
     rand_dict = green_light_time(rand_dict)
