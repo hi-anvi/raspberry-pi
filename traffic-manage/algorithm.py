@@ -1,23 +1,36 @@
 import random_dict_generator as rdg
 import time
 
-road1 = rdg.rand_dict_creator()
-road2 = rdg.rand_dict_creator()
-road3 = rdg.rand_dict_creator()
-road4 = rdg.rand_dict_creator()
+road1 = rdg.rand_dict_creator(1)
+road2 = rdg.rand_dict_creator(2)
+road3 = rdg.rand_dict_creator(3)
+road4 = rdg.rand_dict_creator(4)
 roads = [road1, road2, road3, road4]
 
-print(*roads, sep="\n", end="\n")
-print("\n-----------------------------\n")
+print("Starting...")
 
-def get_roads():
+def get_roads(order=["1", "2", "3", "4"]):
     """Returns a list of roads"""
-    road1 = rdg.rand_dict_creator()
-    road2 = rdg.rand_dict_creator()
-    road3 = rdg.rand_dict_creator()
-    road4 = rdg.rand_dict_creator()
-    roads = [road1, road2, road3, road4]
-    return roads
+    road1 = rdg.rand_dict_creator(1)
+    road2 = rdg.rand_dict_creator(2)
+    road3 = rdg.rand_dict_creator(3)
+    road4 = rdg.rand_dict_creator(4)
+    roadss = [road1, road2, road3, road4]
+    roads = ["road1", "road2", "road3", "road4"]
+    roads_updated = []
+    for i, r in enumerate(order):
+        for ind, road in enumerate(roads):
+            if r in road:
+                roads_updated.append(roadss[ind])
+                break
+    return roads_updated
+
+def close_leds(roads):
+    for i, r in enumerate(roads):
+        r["Red led"].off()
+        r["Green led"].off()
+        r["Red led"].close()
+        r["Green led"].close()
 
 def set_unlocked(locked, roads):
     """Returns a list with the items not in locked"""
@@ -52,6 +65,14 @@ def max_dict_in_dict(roads):
             break
     return max_road
 
+def light_set(roads, now_road):
+    """Sets the lighting for the roads"""
+    for r, i in enumerate(roads):
+        roads[r]["Red led"].on()
+        roads[r]["Green led"].off()
+    roads[now_road]["Green led"].on()
+    roads[now_road]["Red led"].off()
+
 def get_order_lights():
     """Returns the order of roads which should be given green light"""
     global roads
@@ -60,19 +81,19 @@ def get_order_lights():
     unlocked = {}
     now_road = 0
     for road in roads:
+        close_leds(roads)
         roads = get_roads()
         unlocked = set_unlocked(locked, roads)
-        print("\n")
-        print(*unlocked, sep="\n", end="\n")
         max_road = max_dict_in_dict(unlocked)
-        print("\n")
-        print(max_road)
         now_road = find_now_road_index(max_road, roads)
         order.append(f"road" + str(now_road + 1))
         locked.append(now_road)
-        print("Green light given to road", str(now_road + 1) + ".\n")
+        print("\nGreen light given to road", str(now_road + 1) + ".\n")
+        light_set(roads, now_road)
+        time.sleep(roads[now_road]["Green light time"])
         print("---------------------")
 
+    close_leds(roads)
     return order
 
 def string2list(order_list_str):
@@ -80,17 +101,33 @@ def string2list(order_list_str):
     order_list = []
     for key, string in enumerate(order_list_str):
         if "1" in string:
-            order_list.append(1)
+            order_list.append("1")
         elif "2" in string:
-            order_list.append(2)
+            order_list.append("2")
         elif "3" in string:
-            order_list.append(3)
+            order_list.append("3")
         elif "4" in string:
-            order_list.append(4)
+            order_list.append("4")
 
     return order_list
 
 order = get_order_lights()
-print(*order, sep="\n", end="\n")
 order = string2list(order)
-print(*order, sep="\n")
+
+try:
+    while True:
+        lists = get_roads(order=order)
+        for i, r in enumerate(lists):
+            if not i == 0:
+                close_leds(lists)
+                lists = get_roads(order=order)
+            light_set(lists, i)
+            print("\nGreen light given to road", str(int(order[i])) + ".\n")
+            time.sleep(r["Green light time"])
+            print("---------------------")
+        close_leds(lists)
+except KeyboardInterrupt:
+    print("\nExiting...")
+
+finally:
+    close_leds(lists)
