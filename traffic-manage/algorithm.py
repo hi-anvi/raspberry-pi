@@ -1,20 +1,21 @@
-import random_dict_generator as rdg
+import traffic_collect_data as tcd
+from turtle import Turtle, Screen
 import time
 
-road1 = rdg.rand_dict_creator(1)
-road2 = rdg.rand_dict_creator(2)
-road3 = rdg.rand_dict_creator(3)
-road4 = rdg.rand_dict_creator(4)
+road1 = tcd.get_dict(1)
+road2 = tcd.get_dict(2)
+road3 = tcd.get_dict(3)
+road4 = tcd.get_dict(4)
 roads = [road1, road2, road3, road4]
 
 print("Starting...")
 
 def get_roads(order=["1", "2", "3", "4"]):
     """Returns a list of roads"""
-    road1 = rdg.rand_dict_creator(1)
-    road2 = rdg.rand_dict_creator(2)
-    road3 = rdg.rand_dict_creator(3)
-    road4 = rdg.rand_dict_creator(4)
+    road1 = tcd.get_dict(1)
+    road2 = tcd.get_dict(2)
+    road3 = tcd.get_dict(3)
+    road4 = tcd.get_dict(4)
     roadss = [road1, road2, road3, road4]
     roads = ["road1", "road2", "road3", "road4"]
     roads_updated = []
@@ -25,7 +26,31 @@ def get_roads(order=["1", "2", "3", "4"]):
                 break
     return roads_updated
 
+def lighting_set(sec, road_no):
+    """Sets timer in the desktop"""
+    writer = Turtle()
+    road_no_writer = Turtle()
+    screen = Screen()
+    writer.hideturtle()
+    writer.color('black')
+    writer.penup()
+    road_no_writer.hideturtle()
+    road_no_writer.color('black')
+    road_no_writer.penup()
+    style = ("Courier",30,'bold')
+    writer.setposition(0,100)
+    road_no_writer.setposition(0,50)
+    screen.title("Timer")
+    screen.setup(width=800, height=600, startx=100, starty=100)
+    for i in range(sec, 0, -1):
+        writer.clear()
+        writer.write(i, font=style, align='center')
+        road_no_writer.write(road_no, font=style, align='center')
+        time.sleep(1)
+    screen.clearscreen()
+
 def close_leds(roads):
+    """Closes the LEDs"""
     for i, r in enumerate(roads):
         r["Red led"].off()
         r["Green led"].off()
@@ -80,9 +105,10 @@ def get_order_lights():
     locked = []
     unlocked = {}
     now_road = 0
-    for road in roads:
-        close_leds(roads)
-        roads = get_roads()
+    for k, road in enumerate(roads):
+        if not k == 0:
+            close_leds(roads)
+            roads = get_roads()
         unlocked = set_unlocked(locked, roads)
         max_road = max_dict_in_dict(unlocked)
         now_road = find_now_road_index(max_road, roads)
@@ -90,7 +116,7 @@ def get_order_lights():
         locked.append(now_road)
         print("\nGreen light given to road", str(now_road + 1) + ".\n")
         light_set(roads, now_road)
-        time.sleep(roads[now_road]["Green light time"])
+        lighting_set(roads[now_road]["Green light time"], "Road: " + str(now_road + 1))
         print("---------------------")
 
     close_leds(roads)
@@ -123,7 +149,7 @@ try:
                 lists = get_roads(order=order)
             light_set(lists, i)
             print("\nGreen light given to road", str(int(order[i])) + ".\n")
-            time.sleep(r["Green light time"])
+            lighting_set(r["Green light time"], "Road: " + str(int(order[i])))
             print("---------------------")
         close_leds(lists)
 except KeyboardInterrupt:
